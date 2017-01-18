@@ -1,17 +1,38 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-		 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.vain.flicker</groupId>
-    <artifactId>flicker</artifactId>
+
+    <name>Flicker API</name>
+    <description>A Java implementation of the Vainglory API</description>
+    <url>http://developer.vainglorygame.com/</url>
+
+    <groupId>gg.vain.flicker</groupId>
+    <artifactId>flicker-api</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>com.vain.flicker.flicker</name>
-    <url>https://github.com/DominicGunn/flicker</url>
+
+    <developers>
+        <developer>
+            <name>Dominic Gunn</name>
+            <email>dominic@vain.gg</email>
+            <organizationUrl>https://github.com/DominicGunn</organizationUrl>
+        </developer>
+    </developers>
 
     <properties>
         <jdk.version>1.8</jdk.version>
     </properties>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <!-- Async HTTP Client -->
@@ -36,4 +57,27 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
 </project>

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author Dominic Gunn (Dominic.Gunn@vain.gg)
+ * @author Dominic Gunn (Dominic.Gunn@protonmail.ch)
  */
 @Type("match")
 @JsonIgnoreProperties(ignoreUnknown = true)
