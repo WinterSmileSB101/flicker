@@ -4,7 +4,39 @@ Flicker is a Java Adaptation of the [Vainglory API](http://developer.vaingloryga
 
 ## Setup
 
-Currently setup involves downloading the source and building a fat jar! We're hoping to be on mvn central soon.
+There are a couple of different ways that you can integrate Flicker into your application.
+
+### Maven
+
+If you use Maven to manage your dependencies, Flicker is available from Maven Central:
+
+```xml
+<dependency>
+    <groupId>gg.vain</groupId>
+	<artifactId>flicker</artifactId>
+	<version>1.0.4</version>
+</dependency>
+```
+
+### Gradle
+
+If you use Gradle to manage your dependencies, Flicker is available from Maven Central:
+
+```
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	compile 'gg.vain:flicker:1.0.4'
+}
+```
+
+### Jar
+Just [download](https://github.com/DominicGunn/flicker/releases) the latest .jar and add it to your project's build path.
+
+We recommend creating a lib/ directory in your project's root directory and putting the .jar there. You can find a pretty good explanation of how to include the lib to your project using IntelliJ [here](http://stackoverflow.com/a/32853178).
+
 
 ## Usage
 
