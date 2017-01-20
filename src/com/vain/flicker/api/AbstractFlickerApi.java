@@ -24,7 +24,10 @@ public abstract class AbstractFlickerApi {
             Match.class, Participant.class, Player.class, Roster.class, Team.class, Status.class
     );
 
-    private static final String API_VERSION = "v2.2.0";
+    private static final String API_VERSION = "v3.1.0";
+
+    private static final String CONTENT_ENCODING_HEADER = "Content-Encoding";
+    private static final String CONTENT_ENCODING_GZIP = "gzip";
 
     private static final String X_TITLE_ID_HEADER = "X-TITLE-ID";
     private static final String X_TITLE_ID_VALUE = "semc-vainglory";
@@ -61,6 +64,7 @@ public abstract class AbstractFlickerApi {
         return httpClient.prepareGet(BASE_API_URL + requestUrl).setQueryParams(params)
                 .addHeader(ACCEPT_HEADER, APPLICATION_VND_API_JSON)
                 .addHeader(X_TITLE_ID_HEADER, X_TITLE_ID_VALUE)
+                .addHeader(CONTENT_ENCODING_HEADER, CONTENT_ENCODING_GZIP)
                 .addHeader(AUTHORIZATION_HEADER, "Bearer " + jwtToken)
                 .execute().toCompletableFuture();
     }

@@ -9,7 +9,7 @@
     <groupId>gg.vain</groupId>
     <artifactId>flicker</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.5</version>
 
     <developers>
         <developer>
