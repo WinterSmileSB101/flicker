@@ -25,7 +25,7 @@ public class Match {
     private Date createdAt;
     private Long duration;
 
-    private String region;
+    private String shardId;
     private String gameMode;
     private String patchVersion;
 
@@ -44,8 +44,8 @@ public class Match {
         return duration;
     }
 
-    public String getRegion() {
-        return region;
+    public String getShardId() {
+        return shardId;
     }
 
     public String getGameMode() {
@@ -66,7 +66,7 @@ public class Match {
                 "roster=" + roster +
                 ", patchVersion='" + patchVersion + '\'' +
                 ", gameMode='" + gameMode + '\'' +
-                ", region='" + region + '\'' +
+                ", shardId='" + shardId + '\'' +
                 ", duration=" + duration +
                 ", createdAt=" + createdAt +
                 ", id='" + id + '\'' +
