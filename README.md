@@ -1,5 +1,7 @@
 # Flicker
 
+[![Build Status](https://travis-ci.org/DominicGunn/flicker.svg?branch=master)](https://travis-ci.org/DominicGunn/flicker)
+
 Flicker is a Java Adaptation of the [Vainglory API](http://developer.vainglorygame.com/docs/).
 
 ## Setup
