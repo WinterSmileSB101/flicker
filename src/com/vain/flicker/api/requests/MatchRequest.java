@@ -1,14 +1,18 @@
 package com.vain.flicker.api.requests;
 
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.vain.flicker.utils.Shard;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 
 /**
  * @author Dominic Gunn (dominic@vain.gg)
  */
 public class MatchRequest {
+
+    private static final ISO8601DateFormat dateFormat = new ISO8601DateFormat();
 
     private Shard shard;
 
@@ -17,6 +21,9 @@ public class MatchRequest {
 
     private String matchId;
     private String sortField;
+
+    private Date createdAfter;
+    private Date createdBefore;
 
     private Collection<String> playerNames;
     private Collection<String> teamNames;
@@ -27,6 +34,8 @@ public class MatchRequest {
         this.limit = builder.limit;
         this.matchId = builder.matchId;
         this.sortField = builder.sortField;
+        this.createdAfter = builder.createdAfter;
+        this.createdBefore = builder.createdBefore;
         this.playerNames = builder.playerNames;
         this.teamNames = builder.teamNames;
     }
@@ -51,6 +60,28 @@ public class MatchRequest {
         return sortField;
     }
 
+    public Date getCreatedAfter() {
+        return createdAfter;
+    }
+
+    public Date getCreatedBefore() {
+        return createdBefore;
+    }
+
+    public String getCreatedAfterString() {
+        if (createdAfter == null) {
+            return null;
+        }
+        return dateFormat.format(createdAfter);
+    }
+
+    public String getCreatedBeforeString() {
+        if (createdBefore == null) {
+            return null;
+        }
+        return dateFormat.format(createdBefore);
+    }
+
     public Collection<String> getPlayerNames() {
         return playerNames;
     }
@@ -67,6 +98,9 @@ public class MatchRequest {
 
         private String matchId;
         private String sortField;
+
+        private Date createdAfter;
+        private Date createdBefore;
 
         private Collection<String> playerNames;
         private Collection<String> teamNames;
@@ -93,6 +127,16 @@ public class MatchRequest {
 
         public Builder sortField(String sortField) {
             this.sortField = sortField;
+            return this;
+        }
+
+        public Builder createdAfter(Date createdAfter) {
+            this.createdAfter = createdAfter;
+            return this;
+        }
+
+        public Builder createdBefore(Date createdBefore) {
+            this.createdBefore = createdBefore;
             return this;
         }
 

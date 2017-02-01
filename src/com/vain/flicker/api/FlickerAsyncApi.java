@@ -69,6 +69,15 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
             requestParams.put("page[offset]", Collections.singletonList(String.valueOf(matchRequest.getLimit())));
         }
 
+        if (matchRequest.getCreatedAfter() != null) {
+            System.out.println(matchRequest.getCreatedAfterString());
+            requestParams.put("filter[createdAt-start]", Collections.singletonList(matchRequest.getCreatedAfterString()));
+        }
+
+        if (matchRequest.getCreatedBefore() != null) {
+            requestParams.put("filter[createdAt-end]",Collections.singletonList(matchRequest.getCreatedBeforeString()));
+        }
+
         if (matchRequest.getPlayerNames() != null) {
             requestParams.put("filter[playerNames]", new ArrayList<>(matchRequest.getPlayerNames()));
         }
