@@ -70,7 +70,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         }
 
         if (matchRequest.getCreatedAfter() != null) {
-            System.out.println(matchRequest.getCreatedAfterString());
             requestParams.put("filter[createdAt-start]", Collections.singletonList(matchRequest.getCreatedAfterString()));
         }
 
