@@ -4,7 +4,7 @@ package com.vain.flicker.utils;
  * @author Dominic Gunn (dominic@vain.gg)
  */
 public enum Shard {
-    NA("North America"), EU("Europe");
+    NA("North America"), EU("Europe"), SEA("South East Asia"), EA("East Asia"), SA("South America"), CN("China");
 
     private String shardRegion;
 
