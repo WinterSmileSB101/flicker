@@ -94,6 +94,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     private String buildShardedUrl(String endPoint, Shard shard) {
-        return shard.name().toLowerCase() + endPoint;
+        return shard.getShortCode().toLowerCase() + endPoint;
     }
 }
