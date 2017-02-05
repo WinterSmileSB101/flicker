@@ -6,9 +6,7 @@ import com.vain.flicker.model.match.*;
 import com.vain.flicker.model.player.Player;
 import com.vain.flicker.model.status.Status;
 import com.vain.flicker.utils.Shard;
-import org.asynchttpclient.AsyncHttpClient;
-import org.asynchttpclient.DefaultAsyncHttpClient;
-import org.asynchttpclient.Response;
+import org.asynchttpclient.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +38,13 @@ public abstract class AbstractFlickerApi {
     private static final String BASE_API_URL = "https://api.dc01.gamelockerapp.com/shards/";
     private static final String STATUS_API_URL = "https://api.dc01.gamelockerapp.com/status";
 
-    private static final AsyncHttpClient httpClient = new DefaultAsyncHttpClient();
+    private static final AsyncHttpClient httpClient = new DefaultAsyncHttpClient(
+            new DefaultAsyncHttpClientConfig.Builder()
+                .setMaxConnections(500)
+                .setMaxConnectionsPerHost(200)
+                .setPooledConnectionIdleTimeout(100)
+                .setConnectionTtl(500).build()
+    );
 
     private String jwtToken = null;
     private Shard shard = Shard.NA;
