@@ -13,6 +13,7 @@ public class ParticipantStats {
 
     private int level;
     private String skinKey;
+    private Integer skillTier;
 
     private int wins;
     private boolean winner;
@@ -42,6 +43,10 @@ public class ParticipantStats {
 
     public int getLevel() {
         return level;
+    }
+
+    public Integer getSkillTier() {
+        return skillTier;
     }
 
     public String getSkinKey() {
