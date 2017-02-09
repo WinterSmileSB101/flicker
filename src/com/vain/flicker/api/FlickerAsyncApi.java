@@ -61,6 +61,10 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         Shard shard = matchRequest.getShard() == null ? getShard() : matchRequest.getShard();
         Map<String, List<String>> requestParams = new HashMap<>();
 
+        if (matchRequest.getSortField() != null) {
+            requestParams.put("sort", Collections.singletonList(String.valueOf(matchRequest.getSortField())));
+        }
+
         if (matchRequest.getLimit() != null) {
             requestParams.put("page[limit]", Collections.singletonList(String.valueOf(matchRequest.getLimit())));
         }
@@ -87,6 +91,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
 
         return get((buildShardedUrl(MATCHES_ENDPOINT, shard)), requestParams).thenApply(apiResponse -> {
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
+                System.out.println(apiResponse.getResponseBody());
                 return resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Match.class).get();
             }
             throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode());
