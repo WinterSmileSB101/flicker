@@ -22,7 +22,7 @@ public abstract class AbstractFlickerApi {
             Match.class, Participant.class, Player.class, Roster.class, Team.class, Status.class
     );
 
-    private static final String API_VERSION = "v3.2.0";
+    private static final String API_VERSION = "v3.3.1";
 
     private static final String CONTENT_ENCODING_HEADER = "Content-Encoding";
     private static final String CONTENT_ENCODING_GZIP = "gzip";
