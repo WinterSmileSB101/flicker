@@ -15,8 +15,8 @@ If you use Maven to manage your dependencies, Flicker is available from Maven Ce
 ```xml
 <dependency>
     <groupId>gg.vain</groupId>
-	<artifactId>flicker</artifactId>
-	<version>1.2.6</version>
+	<artifactId>flicker/artifactId>
+	<version>1.2.7</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-	compile 'gg.vain:flicker:1.2.6'
+	compile 'gg.vain:flicker:1.2.7'
 }
 ```
 
