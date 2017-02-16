@@ -24,7 +24,7 @@ public abstract class AbstractFlickerApi {
             Sample.class
     );
 
-    private static final String API_VERSION = "v3.3.1";
+    private static final String API_VERSION = "v3.7.1";
 
     private static final String CONTENT_ENCODING_HEADER = "Content-Encoding";
     private static final String CONTENT_ENCODING_GZIP = "gzip";
