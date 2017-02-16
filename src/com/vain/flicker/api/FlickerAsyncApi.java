@@ -2,6 +2,7 @@ package com.vain.flicker.api;
 
 import com.vain.flicker.api.requests.MatchRequest;
 import com.vain.flicker.model.player.Player;
+import com.vain.flicker.model.sample.Sample;
 import com.vain.flicker.utils.Shard;
 import com.vain.flicker.model.match.Match;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -16,9 +17,24 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
 
     private static final String PLAYERS_ENDPOINT = "/players";
     private static final String MATCHES_ENDPOINT = "/matches";
+    private static final String SAMPLES_ENDPOINT = "/samples";
 
     public FlickerAsyncApi(String apiKey) {
         super(apiKey);
+    }
+
+    public CompletableFuture<List<Sample>> getSamples() {
+        return getSamples(null);
+    }
+
+    public CompletableFuture<List<Sample>> getSamples(Shard shard) {
+        Shard endShard = shard == null ? getShard() : shard;
+        return get((buildShardedUrl(SAMPLES_ENDPOINT, endShard)), Collections.emptyMap()).thenApply(apiResponse -> {
+            if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
+                return resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Sample.class).get();
+            }
+            throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode());
+        });
     }
 
     public CompletableFuture<Player> getPlayerById(String playerId) {

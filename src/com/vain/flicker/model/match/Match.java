@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author Dominic Gunn (Dominic.Gunn@protonmail.ch)
+ * @author Dominic Gunn (dominic@vain.gg)
  */
 @Type("match")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -18,6 +18,7 @@ public class Match {
 
     @Id
     private String id;
+    private String titleId;
 
     @JsonProperty("stats")
     private MatchStats matchStats;
@@ -34,6 +35,10 @@ public class Match {
 
     public String getId() {
         return id;
+    }
+
+    public String getTitleId() {
+        return titleId;
     }
 
     public Date getCreatedAt() {
@@ -64,6 +69,7 @@ public class Match {
     public String toString() {
         return "Match{" +
                 "roster=" + roster +
+                ", titleId='" + titleId + '\'' +
                 ", patchVersion='" + patchVersion + '\'' +
                 ", gameMode='" + gameMode + '\'' +
                 ", shardId='" + shardId + '\'' +

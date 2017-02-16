@@ -2,6 +2,7 @@ package com.vain.flicker.api;
 
 import com.vain.flicker.api.requests.MatchRequest;
 import com.vain.flicker.model.player.Player;
+import com.vain.flicker.model.sample.Sample;
 import com.vain.flicker.utils.Shard;
 import com.vain.flicker.model.match.Match;
 
@@ -18,6 +19,14 @@ public class FlickerApi {
 
     public FlickerApi(String apiKey) {
         flickerAsyncApi = new FlickerAsyncApi(apiKey);
+    }
+
+    public List<Sample> getSamples() {
+        return forceGet(flickerAsyncApi.getSamples());
+    }
+
+    public List<Sample> getSamples(Shard shard) {
+        return forceGet(flickerAsyncApi.getSamples(shard));
     }
 
     public Player getPlayerById(String playerId) {

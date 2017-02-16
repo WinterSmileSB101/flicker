@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.vain.flicker.model.match.*;
 import com.vain.flicker.model.player.Player;
+import com.vain.flicker.model.sample.Sample;
 import com.vain.flicker.model.status.Status;
 import com.vain.flicker.utils.Shard;
 import org.asynchttpclient.*;
@@ -17,9 +18,10 @@ import java.util.concurrent.CompletableFuture;
  * @author Dominic Gunn (dominic@vain.gg)
  */
 public abstract class AbstractFlickerApi {
-    protected static final ObjectMapper objectMapper = new ObjectMapper();
+
     protected static final ResourceConverter resourceConverter = new ResourceConverter(
-            Match.class, Participant.class, Player.class, Roster.class, Team.class, Status.class
+            Match.class, Participant.class, Player.class, Roster.class, Team.class, Status.class,
+            Sample.class
     );
 
     private static final String API_VERSION = "v3.3.1";
