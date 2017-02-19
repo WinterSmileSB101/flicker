@@ -9,6 +9,8 @@ import com.vain.flicker.model.match.Match;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.asynchttpclient.Response;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +24,8 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     private static final String MATCHES_ENDPOINT = "/matches";
     private static final String SAMPLES_ENDPOINT = "/samples";
 
+    private static Date rateLimitExpiry = null;
+
     public FlickerAsyncApi(String apiKey) {
         super(apiKey);
     }
@@ -31,6 +35,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<List<Sample>> getSamples(Shard shard) {
+        failFastIfRateLimited();
         Shard endShard = shard == null ? getShard() : shard;
         return get((buildShardedUrl(SAMPLES_ENDPOINT, endShard)), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
@@ -42,6 +47,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<Player> getPlayerById(String playerId) {
+        failFastIfRateLimited();
         return get(buildShardedUrl(PLAYERS_ENDPOINT + "/" + playerId, getShard()), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
@@ -52,6 +58,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<Player> getPlayerById(String playerId, Shard shard) {
+        failFastIfRateLimited();
         return get(buildShardedUrl(PLAYERS_ENDPOINT + "/" + playerId, shard), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
@@ -66,6 +73,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<Match> getMatch(String matchId, Shard shard) {
+        failFastIfRateLimited();
         Shard endShard = shard == null ? getShard() : shard;
         return get((buildShardedUrl(MATCHES_ENDPOINT + "/" + matchId, endShard)), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
@@ -81,6 +89,8 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<List<Match>> getMatches(MatchRequest matchRequest) {
+        failFastIfRateLimited();
+
         Shard shard = matchRequest.getShard() == null ? getShard() : matchRequest.getShard();
         Map<String, List<String>> requestParams = new HashMap<>();
 
@@ -117,13 +127,24 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
                 return resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Match.class).get();
             }
-            throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode());
+            throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode() + " seconds");
         });
     }
 
+    private void failFastIfRateLimited() {
+        if (rateLimitExpiry != null) {
+            Date currentDate = new Date();
+            if (currentDate.before(rateLimitExpiry)) {
+                throw new FlickerException("We're still operating under rate limit, try again in " + ChronoUnit.SECONDS.between(currentDate.toInstant(), rateLimitExpiry.toInstant()));
+            }
+            rateLimitExpiry = null;
+        }
+    }
+    
     private void checkForCommonFailures(Response apiResponse) {
         if (apiResponse.getStatusCode() == HttpResponseStatus.TOO_MANY_REQUESTS.code()) {
             printRateLimitInformation(apiResponse);
+            rateLimitExpiry = Date.from(Instant.now().plusNanos(ApiResponseHelper.getRateLimitReset(apiResponse)));
             throw new FlickerException("Rate limit exceeded, limit resets in " + TimeUnit.NANOSECONDS.toSeconds(ApiResponseHelper.getRateLimitReset(apiResponse)) + " seconds");
         }
     }
