@@ -1,14 +1,17 @@
 package com.vain.flicker.api;
 
 import com.vain.flicker.api.requests.MatchRequest;
+import com.vain.flicker.model.ApiResponseHelper;
 import com.vain.flicker.model.player.Player;
 import com.vain.flicker.model.sample.Sample;
 import com.vain.flicker.utils.Shard;
 import com.vain.flicker.model.match.Match;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.asynchttpclient.Response;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Dominic Gunn (dominic@vain.gg)
@@ -30,6 +33,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     public CompletableFuture<List<Sample>> getSamples(Shard shard) {
         Shard endShard = shard == null ? getShard() : shard;
         return get((buildShardedUrl(SAMPLES_ENDPOINT, endShard)), Collections.emptyMap()).thenApply(apiResponse -> {
+            checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
                 return resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Sample.class).get();
             }
@@ -39,6 +43,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
 
     public CompletableFuture<Player> getPlayerById(String playerId) {
         return get(buildShardedUrl(PLAYERS_ENDPOINT + "/" + playerId, getShard()), Collections.emptyMap()).thenApply(apiResponse -> {
+            checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
                 return resourceConverter.readDocument(apiResponse.getResponseBodyAsStream(), Player.class).get();
             }
@@ -48,6 +53,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
 
     public CompletableFuture<Player> getPlayerById(String playerId, Shard shard) {
         return get(buildShardedUrl(PLAYERS_ENDPOINT + "/" + playerId, shard), Collections.emptyMap()).thenApply(apiResponse -> {
+            checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
                 return resourceConverter.readDocument(apiResponse.getResponseBodyAsStream(), Player.class).get();
             }
@@ -62,6 +68,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     public CompletableFuture<Match> getMatch(String matchId, Shard shard) {
         Shard endShard = shard == null ? getShard() : shard;
         return get((buildShardedUrl(MATCHES_ENDPOINT + "/" + matchId, endShard)), Collections.emptyMap()).thenApply(apiResponse -> {
+            checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
                 return resourceConverter.readDocument(apiResponse.getResponseBodyAsStream(), Match.class).get();
             }
@@ -106,6 +113,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         }
 
         return get((buildShardedUrl(MATCHES_ENDPOINT, shard)), requestParams).thenApply(apiResponse -> {
+            checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
                 return resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Match.class).get();
             }
@@ -113,7 +121,22 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         });
     }
 
+    private void checkForCommonFailures(Response apiResponse) {
+        if (apiResponse.getStatusCode() == HttpResponseStatus.TOO_MANY_REQUESTS.code()) {
+            printRateLimitInformation(apiResponse);
+            throw new FlickerException("Rate limit exceeded, limit resets in " + TimeUnit.NANOSECONDS.toSeconds(ApiResponseHelper.getRateLimitReset(apiResponse)) + " seconds");
+        }
+    }
+
     private String buildShardedUrl(String endPoint, Shard shard) {
         return shard.getShortCode().toLowerCase() + endPoint;
+    }
+
+    private void printRateLimitInformation(Response response) {
+        System.out.println("****** RequestId: " + ApiResponseHelper.getRequestId(response) + " ******");
+        System.out.println("Requests Per Minute: " + ApiResponseHelper.getRateLimit(response));
+        System.out.println("Requests Remaining: " + ApiResponseHelper.getRateLimitRemaining(response));
+        System.out.println("Rate Limit Reset " + ApiResponseHelper.getRateLimitReset(response));
+        System.out.println("***************************************");
     }
 }
