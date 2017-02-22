@@ -24,7 +24,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     private static final String MATCHES_ENDPOINT = "/matches";
     private static final String SAMPLES_ENDPOINT = "/samples";
 
-    private static Date rateLimitExpiry = null;
+    private Date rateLimitExpiry = null;
 
     public FlickerAsyncApi(String apiKey) {
         super(apiKey);
@@ -129,6 +129,10 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
             }
             throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode() + " seconds");
         });
+    }
+
+    public boolean hasReachedLimit() {
+        return rateLimitExpiry != null;
     }
 
     private void failFastIfRateLimited() {

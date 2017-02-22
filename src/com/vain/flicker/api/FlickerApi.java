@@ -21,6 +21,10 @@ public class FlickerApi {
         flickerAsyncApi = new FlickerAsyncApi(apiKey);
     }
 
+    public boolean hasReachedLimit() {
+        return flickerAsyncApi.hasReachedLimit();
+    }
+
     public List<Sample> getSamples() {
         return forceGet(flickerAsyncApi.getSamples());
     }
