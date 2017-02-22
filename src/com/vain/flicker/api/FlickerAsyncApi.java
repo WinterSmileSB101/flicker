@@ -132,7 +132,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public boolean hasReachedLimit() {
-        return rateLimitExpiry != null;
+        return rateLimitExpiry != null && Instant.now().isBefore(rateLimitExpiry.toInstant());
     }
 
     private void failFastIfRateLimited() {
