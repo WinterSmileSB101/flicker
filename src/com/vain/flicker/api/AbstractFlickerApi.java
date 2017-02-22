@@ -42,7 +42,7 @@ public abstract class AbstractFlickerApi {
 
     private static final AsyncHttpClient httpClient = new DefaultAsyncHttpClient(
             new DefaultAsyncHttpClientConfig.Builder()
-                .setMaxConnections(10)
+                .setMaxConnections(100)
                 .setMaxConnectionsPerHost(50)
                 .setPooledConnectionIdleTimeout(100)
                 .setConnectionTtl(500).build()
