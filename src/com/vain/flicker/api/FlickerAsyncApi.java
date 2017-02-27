@@ -68,6 +68,22 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         });
     }
 
+
+    public CompletableFuture<Player> getPlayerByName(String playerName) {
+        return getPlayerByName(playerName, getShard());
+    }
+
+    public CompletableFuture<Player> getPlayerByName(String playerName, Shard shard) {
+        failFastIfRateLimited();
+        return get(buildShardedUrl(PLAYERS_ENDPOINT + "/", shard), Collections.singletonMap("filter[playerName]", Collections.singletonList(playerName))).thenApply(apiResponse -> {
+            checkForCommonFailures(apiResponse);
+            if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
+                return resourceConverter.readDocument(apiResponse.getResponseBodyAsStream(), Player.class).get();
+            }
+            throw new FlickerException("Something went wrong when pulling player data from the API, response code was :" + apiResponse.getStatusCode());
+        });
+    }
+
     public CompletableFuture<Match> getMatch(String matchId) {
         return getMatch(matchId, getShard());
     }
@@ -146,8 +162,8 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
     
     private void checkForCommonFailures(Response apiResponse) {
+        printRateLimitInformation(apiResponse);
         if (apiResponse.getStatusCode() == HttpResponseStatus.TOO_MANY_REQUESTS.code()) {
-            printRateLimitInformation(apiResponse);
             rateLimitExpiry = Date.from(Instant.now().plusNanos(ApiResponseHelper.getRateLimitReset(apiResponse)));
             throw new FlickerException("Rate limit exceeded, limit resets in " + TimeUnit.NANOSECONDS.toSeconds(ApiResponseHelper.getRateLimitReset(apiResponse)) + " seconds");
         }

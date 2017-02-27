@@ -25,20 +25,28 @@ public class FlickerApi {
         return flickerAsyncApi.hasReachedLimit();
     }
 
-    public List<Sample> getSamples() {
-        return forceGet(flickerAsyncApi.getSamples());
-    }
-
-    public List<Sample> getSamples(Shard shard) {
-        return forceGet(flickerAsyncApi.getSamples(shard));
-    }
-
     public Player getPlayerById(String playerId) {
         return forceGet(flickerAsyncApi.getPlayerById(playerId));
     }
 
     public Player getPlayerById(String playerId, Shard shard) {
         return forceGet(flickerAsyncApi.getPlayerById(playerId, shard));
+    }
+
+    public Player getPlayerByName(String playerName) {
+        return forceGet(flickerAsyncApi.getPlayerByName(playerName));
+    }
+
+    public Player getPlayerByName(String playerName, Shard shard) {
+        return forceGet(flickerAsyncApi.getPlayerByName(playerName, shard));
+    }
+
+    public List<Sample> getSamples() {
+        return forceGet(flickerAsyncApi.getSamples());
+    }
+
+    public List<Sample> getSamples(Shard shard) {
+        return forceGet(flickerAsyncApi.getSamples(shard));
     }
 
     public Match getMatch(String matchId) {
