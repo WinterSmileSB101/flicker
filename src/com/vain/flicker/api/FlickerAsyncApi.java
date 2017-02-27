@@ -35,7 +35,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<List<Sample>> getSamples(Shard shard) {
-        failFastIfRateLimited();
         Shard endShard = shard == null ? getShard() : shard;
         return get((buildShardedUrl(SAMPLES_ENDPOINT, endShard)), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
@@ -47,7 +46,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<Player> getPlayerById(String playerId) {
-        failFastIfRateLimited();
         return get(buildShardedUrl(PLAYERS_ENDPOINT + "/" + playerId, getShard()), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
@@ -58,7 +56,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<Player> getPlayerById(String playerId, Shard shard) {
-        failFastIfRateLimited();
         return get(buildShardedUrl(PLAYERS_ENDPOINT + "/" + playerId, shard), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
@@ -74,7 +71,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<Player> getPlayerByName(String playerName, Shard shard) {
-        failFastIfRateLimited();
         return get(buildShardedUrl(PLAYERS_ENDPOINT + "/", shard), Collections.singletonMap("filter[playerName]", Collections.singletonList(playerName))).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
@@ -89,7 +85,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<Match> getMatch(String matchId, Shard shard) {
-        failFastIfRateLimited();
         Shard endShard = shard == null ? getShard() : shard;
         return get((buildShardedUrl(MATCHES_ENDPOINT + "/" + matchId, endShard)), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
@@ -105,8 +100,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<List<Match>> getMatches(MatchRequest matchRequest) {
-        failFastIfRateLimited();
-
         Shard shard = matchRequest.getShard() == null ? getShard() : matchRequest.getShard();
         Map<String, List<String>> requestParams = new HashMap<>();
 
@@ -149,6 +142,12 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
 
     public boolean hasReachedLimit() {
         return rateLimitExpiry != null && Instant.now().isBefore(rateLimitExpiry.toInstant());
+    }
+
+    @Override
+    public CompletableFuture<Response> get(final String requestUrl, final Map<String, List<String>> params) {
+        failFastIfRateLimited();
+        return super.get(requestUrl, params);
     }
 
     private void failFastIfRateLimited() {
