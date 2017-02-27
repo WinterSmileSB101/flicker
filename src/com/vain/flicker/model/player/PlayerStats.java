@@ -1,6 +1,7 @@
 package com.vain.flicker.model.player;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Dominic Gunn (dominic@vain.gg)
@@ -17,6 +18,8 @@ public class PlayerStats {
     private double lifetimeGold;
 
     private int played;
+
+    @JsonProperty("played_ranked")
     private int playedRanked;
 
     public int getWins() {
