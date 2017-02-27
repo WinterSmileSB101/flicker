@@ -120,7 +120,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         }
 
         if (matchRequest.getCreatedBefore() != null) {
-            requestParams.put("filter[createdAt-end]",Collections.singletonList(matchRequest.getCreatedBeforeString()));
+            requestParams.put("filter[createdAt-end]", Collections.singletonList(matchRequest.getCreatedBeforeString()));
         }
 
         if (matchRequest.getPlayerNames() != null) {
@@ -129,6 +129,10 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
 
         if (matchRequest.getTeamNames() != null) {
             requestParams.put("filter[teamNames]", new ArrayList<>(matchRequest.getTeamNames()));
+        }
+
+        if (matchRequest.getGameMode() != null) {
+            requestParams.put("filter[gameMode]", Collections.singletonList(matchRequest.getGameModeIdentifier()));
         }
 
         return get((buildShardedUrl(MATCHES_ENDPOINT, shard)), requestParams).thenApply(apiResponse -> {

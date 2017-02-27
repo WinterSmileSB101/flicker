@@ -1,6 +1,7 @@
 package com.vain.flicker.api.requests;
 
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.vain.flicker.utils.GameMode;
 import com.vain.flicker.utils.Shard;
 
 import java.util.Collection;
@@ -21,6 +22,7 @@ public class MatchRequest {
 
     private String matchId;
     private String sortField;
+    private GameMode gameMode;
 
     private Date createdAfter;
     private Date createdBefore;
@@ -38,6 +40,7 @@ public class MatchRequest {
         this.createdBefore = builder.createdBefore;
         this.playerNames = builder.playerNames;
         this.teamNames = builder.teamNames;
+        this.gameMode = builder.gameMode;
     }
 
     public Shard getShard() {
@@ -58,6 +61,17 @@ public class MatchRequest {
 
     public String getSortField() {
         return sortField;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public String getGameModeIdentifier() {
+        if (gameMode == null) {
+            return null;
+        }
+        return gameMode.getGameModeIdentifier();
     }
 
     public Date getCreatedAfter() {
@@ -98,6 +112,7 @@ public class MatchRequest {
 
         private String matchId;
         private String sortField;
+        private GameMode gameMode;
 
         private Date createdAfter;
         private Date createdBefore;
@@ -122,6 +137,11 @@ public class MatchRequest {
 
         public Builder matchId(String matchId) {
             this.matchId = matchId;
+            return this;
+        }
+
+        public Builder gameMode(GameMode gameMode) {
+            this.gameMode = gameMode;
             return this;
         }
 
