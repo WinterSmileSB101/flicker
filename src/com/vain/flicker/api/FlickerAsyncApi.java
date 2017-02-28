@@ -36,7 +36,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
 
     public CompletableFuture<List<Sample>> getSamples(Shard shard) {
         Shard endShard = shard == null ? getShard() : shard;
-        return get((buildShardedUrl(SAMPLES_ENDPOINT, endShard)), Collections.emptyMap()).thenApply(apiResponse -> {
+        return get((buildShardedUrl(SAMPLES_ENDPOINT, endShard)), Collections.singletonMap("sort", Collections.singletonList("-createdAt"))).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
                 return resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Sample.class).get();
