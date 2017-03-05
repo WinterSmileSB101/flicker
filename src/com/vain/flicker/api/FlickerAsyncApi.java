@@ -165,7 +165,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
     
     private void checkForCommonFailures(Response apiResponse) {
-        printRateLimitInformation(apiResponse);
         if (apiResponse.getStatusCode() == HttpResponseStatus.TOO_MANY_REQUESTS.code()) {
             rateLimitExpiry = Date.from(Instant.now().plusNanos(ApiResponseHelper.getRateLimitReset(apiResponse)));
             throw new FlickerException("Rate limit exceeded, limit resets in " + TimeUnit.NANOSECONDS.toSeconds(ApiResponseHelper.getRateLimitReset(apiResponse)) + " seconds");
