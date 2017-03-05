@@ -1,28 +1,59 @@
 package com.vain.flicker.utils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @author Dominic Gunn (dominic@vain.gg)
  */
 public enum GameMode {
-    RANKED("ranked"),
-    CASUAL("casual"),
+    RANKED("ranked", false),
+    CASUAL("casual", false),
 
-    BLITZ("blitz_pvp_ranked"),
-    BATTLE_ROYAL("casual_aral"),
+    BLITZ("blitz_pvp_ranked", true),
+    BATTLE_ROYAL("casual_aral", true),
 
-    PRIVATE("private"),
-    PRIVATE_RANKED("private_party_draft_match"),
+    PRIVATE("private", false),
+    PRIVATE_RANKED("private_party_draft_match", false),
 
-    PRIVATE_BLITZ("private_party_blitz_match"),
-    PRIVATE_BATTLE_ROYAL("private_party_aral_match");
+    PRIVATE_BLITZ("private_party_blitz_match", true),
+    PRIVATE_BATTLE_ROYAL("private_party_aral_match", true);
 
     private String gameModeIdentifier;
-    GameMode(String gameModeIdentifier) {
+    private boolean brawlMode;
+
+    GameMode(String gameModeIdentifier, boolean brawlMode) {
         this.gameModeIdentifier = gameModeIdentifier;
+        this.brawlMode = brawlMode;
     }
 
     public String getGameModeIdentifier() {
         return gameModeIdentifier;
+    }
+
+    public boolean isBrawlMode() {
+        return brawlMode;
+    }
+
+    public static Collection<GameMode> getBrawlModes() {
+        List<GameMode> gameModes = new ArrayList<>();
+        for (GameMode gameMode : GameMode.values()) {
+            if (gameMode.isBrawlMode()) {
+                gameModes.add(gameMode);
+            }
+        }
+        return gameModes;
+    }
+
+    public static Collection<GameMode> getRegularModes() {
+        List<GameMode> gameModes = new ArrayList<>();
+        for (GameMode gameMode : GameMode.values()) {
+            if (!gameMode.isBrawlMode()) {
+                gameModes.add(gameMode);
+            }
+        }
+        return gameModes;
     }
 
     public static GameMode getByGameModeIdentifier(String gameModeIdentifier) {
