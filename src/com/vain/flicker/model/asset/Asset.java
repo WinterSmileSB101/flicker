@@ -17,7 +17,7 @@ public class Asset {
     @Id
     private String id;
 
-    @JsonProperty("url")
+    @JsonProperty("URL")
     private String url;
 
     @JsonProperty("filename")
@@ -55,5 +55,18 @@ public class Asset {
 
     public String getContentType() {
         return contentType;
+    }
+
+    @Override
+    public String toString() {
+        return "Asset{" +
+                "id='" + id + '\'' +
+                ", url='" + url + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", contentType='" + contentType + '\'' +
+                '}';
     }
 }

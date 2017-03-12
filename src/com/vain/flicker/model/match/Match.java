@@ -80,14 +80,16 @@ public class Match {
     @Override
     public String toString() {
         return "Match{" +
-                "roster=" + roster +
+                "id='" + id + '\'' +
                 ", titleId='" + titleId + '\'' +
-                ", patchVersion='" + patchVersion + '\'' +
-                ", gameMode='" + gameMode + '\'' +
-                ", shardId='" + shardId + '\'' +
-                ", duration=" + duration +
+                ", matchStats=" + matchStats +
                 ", createdAt=" + createdAt +
-                ", id='" + id + '\'' +
+                ", duration=" + duration +
+                ", shardId='" + shardId + '\'' +
+                ", gameMode='" + gameMode + '\'' +
+                ", patchVersion='" + patchVersion + '\'' +
+                ", roster=" + roster +
+                ", assets=" + assets +
                 '}';
     }
 }
