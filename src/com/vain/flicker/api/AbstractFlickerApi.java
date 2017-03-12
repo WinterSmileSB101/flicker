@@ -2,6 +2,7 @@ package com.vain.flicker.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasminb.jsonapi.ResourceConverter;
+import com.vain.flicker.model.asset.Asset;
 import com.vain.flicker.model.match.*;
 import com.vain.flicker.model.player.Player;
 import com.vain.flicker.model.sample.Sample;
@@ -21,7 +22,7 @@ public abstract class AbstractFlickerApi {
 
     protected static final ResourceConverter resourceConverter = new ResourceConverter(
             Match.class, Participant.class, Player.class, Roster.class, Team.class, Status.class,
-            Sample.class
+            Sample.class, Asset.class
     );
 
     private static final String API_VERSION = "v3.7.1";

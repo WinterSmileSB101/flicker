@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.vain.flicker.model.asset.Asset;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,9 @@ public class Match {
 
     @Relationship("rosters")
     private List<Roster> roster;
+
+    @Relationship("assets")
+    private List<Asset> assets;
 
     public String getId() {
         return id;
@@ -63,6 +67,14 @@ public class Match {
 
     public List<Roster> getRoster() {
         return roster;
+    }
+
+    public List<Asset> getAssets() {
+        return assets;
+    }
+
+    public MatchStats getMatchStats() {
+        return matchStats;
     }
 
     @Override

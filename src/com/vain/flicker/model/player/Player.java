@@ -3,7 +3,11 @@ package com.vain.flicker.model.player;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Id;
+import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.vain.flicker.model.asset.Asset;
+
+import java.util.List;
 
 /**
  * @author Dominic Gunn (dominic@vain.gg)
@@ -20,6 +24,9 @@ public class Player {
     @JsonProperty("stats")
     private PlayerStats playerStats;
 
+    @Relationship("assets")
+    private List<Asset> assets;
+
     public String getId() {
         return id;
     }
@@ -30,6 +37,10 @@ public class Player {
 
     public PlayerStats getPlayerStats() {
         return playerStats;
+    }
+
+    public List<Asset> getAssets() {
+        return assets;
     }
 
     @Override
