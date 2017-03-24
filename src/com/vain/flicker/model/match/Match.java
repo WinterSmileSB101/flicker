@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.vain.flicker.api.FlickerException;
+import com.vain.flicker.api.client.S3WebClient;
 import com.vain.flicker.model.asset.Asset;
+import com.vain.flicker.model.telemetry.Telemetry;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +19,8 @@ import java.util.List;
 @Type("match")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Match {
+
+    private final static String TELEMETRY_ASSET = "telemetry";
 
     @Id
     private String id;
@@ -36,6 +41,8 @@ public class Match {
 
     @Relationship("assets")
     private List<Asset> assets;
+
+    private Telemetry telemetry;
 
     public String getId() {
         return id;
@@ -77,6 +84,26 @@ public class Match {
         return matchStats;
     }
 
+    public Telemetry getTelemetry() {
+        if (telemetry == null) {
+            Asset telemetryAsset = getTelemetryAsset();
+            if (telemetryAsset == null) {
+                throw new FlickerException("No telemetry asset available.");
+            }
+            telemetry = S3WebClient.getTelemetry(telemetryAsset.getUrl()).join();
+        }
+        return telemetry;
+    }
+
+    private Asset getTelemetryAsset() {
+        for (Asset asset : assets) {
+            if (TELEMETRY_ASSET.equalsIgnoreCase(asset.getName())) {
+                return asset;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Match{" +
@@ -90,6 +117,7 @@ public class Match {
                 ", patchVersion='" + patchVersion + '\'' +
                 ", roster=" + roster +
                 ", assets=" + assets +
+                ", telemetry=" + telemetry +
                 '}';
     }
 }

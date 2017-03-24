@@ -2,6 +2,7 @@ package com.vain.flicker.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasminb.jsonapi.ResourceConverter;
+import com.vain.flicker.api.client.AbstractWebClient;
 import com.vain.flicker.model.asset.Asset;
 import com.vain.flicker.model.match.*;
 import com.vain.flicker.model.player.Player;
@@ -18,36 +19,28 @@ import java.util.concurrent.CompletableFuture;
 /**
  * @author Dominic Gunn (dominic@vain.gg)
  */
-public abstract class AbstractFlickerApi {
+public abstract class AbstractFlickerApi extends AbstractWebClient {
 
-    protected static final ResourceConverter resourceConverter = new ResourceConverter(
+    protected final static ResourceConverter resourceConverter = new ResourceConverter(
             Match.class, Participant.class, Player.class, Roster.class, Team.class, Status.class,
             Sample.class, Asset.class
     );
 
-    private static final String API_VERSION = "v3.7.1";
+    private final static String API_VERSION = "v3.7.1";
 
-    private static final String CONTENT_ENCODING_HEADER = "Content-Encoding";
-    private static final String CONTENT_ENCODING_GZIP = "gzip";
+    private final static String CONTENT_ENCODING_HEADER = "Content-Encoding";
+    private final static String CONTENT_ENCODING_GZIP = "gzip";
 
-    private static final String X_TITLE_ID_HEADER = "X-TITLE-ID";
-    private static final String X_TITLE_ID_VALUE = "semc-vainglory";
+    private final static String X_TITLE_ID_HEADER = "X-TITLE-ID";
+    private final static String X_TITLE_ID_VALUE = "semc-vainglory";
 
-    private static final String ACCEPT_HEADER = "Accept";
-    private static final String APPLICATION_VND_API_JSON = "application/vnd.api+json";
+    private final static String ACCEPT_HEADER = "Accept";
+    private final static String APPLICATION_VND_API_JSON = "application/vnd.api+json";
 
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private final static String AUTHORIZATION_HEADER = "Authorization";
 
-    private static final String BASE_API_URL = "https://api.dc01.gamelockerapp.com/shards/";
-    private static final String STATUS_API_URL = "https://api.dc01.gamelockerapp.com/status";
-
-    private static final AsyncHttpClient httpClient = new DefaultAsyncHttpClient(
-            new DefaultAsyncHttpClientConfig.Builder()
-                .setMaxConnections(100)
-                .setMaxConnectionsPerHost(50)
-                .setPooledConnectionIdleTimeout(100)
-                .setConnectionTtl(500).build()
-    );
+    private final static String BASE_API_URL = "https://api.dc01.gamelockerapp.com/shards/";
+    private final static String STATUS_API_URL = "https://api.dc01.gamelockerapp.com/status";
 
     private String jwtToken = null;
     private Shard shard = Shard.NA;

@@ -20,9 +20,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class FlickerAsyncApi extends AbstractFlickerApi {
 
-    private static final String PLAYERS_ENDPOINT = "/players";
-    private static final String MATCHES_ENDPOINT = "/matches";
-    private static final String SAMPLES_ENDPOINT = "/samples";
+    private final static String PLAYERS_ENDPOINT = "/players";
+    private final static String MATCHES_ENDPOINT = "/matches";
+    private final static String SAMPLES_ENDPOINT = "/samples";
 
     private Date rateLimitExpiry = null;
 

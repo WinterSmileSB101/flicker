@@ -5,7 +5,7 @@ package com.vain.flicker.api;
  */
 public class FlickerException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+    private final static long serialVersionUID = 1L;
 
     public FlickerException() {}
     public FlickerException(String errorMessage) {

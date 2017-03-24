@@ -13,10 +13,10 @@ import java.util.List;
  */
 public class ApiResponseHelper {
 
-    private static final String HEADER_REQUEST_ID = "X-Request-Id";
-    private static final String HEADER_RATE_LIMIT = "X-Ratelimit-Limit";
-    private static final String HEADER_RATE_LIMIT_REMAINING = "X-Ratelimit-Remaining";
-    private static final String HEADER_RATE_LIMIT_RESET = "X-Ratelimit-Reset";
+    private final static String HEADER_REQUEST_ID = "X-Request-Id";
+    private final static String HEADER_RATE_LIMIT = "X-Ratelimit-Limit";
+    private final static String HEADER_RATE_LIMIT_REMAINING = "X-Ratelimit-Remaining";
+    private final static String HEADER_RATE_LIMIT_RESET = "X-Ratelimit-Reset";
 
     public static String getRequestId(Response response) {
         return response.getHeader(HEADER_REQUEST_ID);

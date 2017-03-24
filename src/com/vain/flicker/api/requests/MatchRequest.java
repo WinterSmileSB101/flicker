@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class MatchRequest {
 
-    private static final ISO8601DateFormat dateFormat = new ISO8601DateFormat();
+    private final static ISO8601DateFormat dateFormat = new ISO8601DateFormat();
 
     private Shard shard;
 
