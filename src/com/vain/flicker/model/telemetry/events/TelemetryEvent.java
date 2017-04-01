@@ -16,6 +16,9 @@ public abstract class TelemetryEvent {
     private final static String KEY_TEAM = "Team";
     private final static String KY_ACTOR = "Actor";
 
+    protected final static String KEY_TARGET_ACTOR = "TargetActor";
+    protected final static String KEY_TARGET_POSITION = "TargetPosition";
+
     protected Date time;
     protected String type;
     protected Map<String, Object> payload = new HashMap();

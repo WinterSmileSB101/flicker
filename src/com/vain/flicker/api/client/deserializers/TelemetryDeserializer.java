@@ -25,6 +25,7 @@ public class TelemetryDeserializer extends JsonDeserializer<TelemetryEvent> {
     private final static String EVENT_DEAL_DAMAGE = "DealDamage";
     private final static String EVENT_NPC_KILL_NPC = "NPCkillNPC";
     private final static String EVENT_LEARN_ABILITY = "LearnAbility";
+    private final static String EVENT_USE_ITEM_ABILITY = "UseItemAbility";
     private final static String EVENT_PLAYER_FIRST_SPAWN = "PlayerFirstSpawn";
     private final static String EVENT_GOLD_FROM_GOLD_MINE = "GoldFromGoldMine";
     private final static String EVENT_GOLD_FROM_EXECUTION = "GoldFromExecution";
@@ -58,6 +59,8 @@ public class TelemetryDeserializer extends JsonDeserializer<TelemetryEvent> {
                 return objectCodec.treeToValue(jsonNode, NpcKilledNpcTelemetryEvent.class);
             case EVENT_LEARN_ABILITY:
                 return objectCodec.treeToValue(jsonNode, LearnAbilityTelemetryEvent.class);
+            case EVENT_USE_ITEM_ABILITY:
+                return objectCodec.treeToValue(jsonNode, UseItemAbilityTelemetryEvent.class);
             case EVENT_PLAYER_FIRST_SPAWN:
                 return objectCodec.treeToValue(jsonNode, PlayerFirstSpawnTelemetryEvent.class);
             case EVENT_GOLD_FROM_GOLD_MINE:

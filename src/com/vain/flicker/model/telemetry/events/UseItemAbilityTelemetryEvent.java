@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 /**
  * @author Dominic Gunn (dominic@vain.gg)
  */
-@JsonDeserialize(as = UseAbilityTelemetryEvent.class)
-public class UseAbilityTelemetryEvent extends TelemetryEvent {
+@JsonDeserialize(as = UseItemAbilityTelemetryEvent.class)
+public class UseItemAbilityTelemetryEvent extends TelemetryEvent {
 
     private final static String KEY_ABILITY = "Ability";
     private final static String KEY_POSITION = "Position";
