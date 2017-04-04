@@ -49,7 +49,7 @@ public abstract class TelemetryEvent {
         return type;
     }
 
-    public Map<String, Object> getPayload() {
+    protected Map<String, Object> getPayload() {
         return payload;
     }
 

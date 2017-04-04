@@ -1,10 +1,12 @@
 package com.vain.flicker.model.telemetry.events;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author Dominic Gunn (dominic@vain.gg)
  */
+@JsonSerialize(as = DealDamageTelemetryEvent.class)
 @JsonDeserialize(as = DealDamageTelemetryEvent.class)
 public class DealDamageTelemetryEvent extends TelemetryEvent {
 
