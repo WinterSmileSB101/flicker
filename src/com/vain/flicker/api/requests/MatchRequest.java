@@ -27,6 +27,7 @@ public class MatchRequest {
     private Date createdAfter;
     private Date createdBefore;
 
+    private Collection<String> playerIds;
     private Collection<String> playerNames;
     private Collection<String> teamNames;
 
@@ -39,6 +40,7 @@ public class MatchRequest {
         this.createdAfter = builder.createdAfter;
         this.createdBefore = builder.createdBefore;
         this.playerNames = builder.playerNames;
+        this.playerIds = builder.playerIds;
         this.teamNames = builder.teamNames;
         this.gameMode = builder.gameMode;
     }
@@ -100,6 +102,10 @@ public class MatchRequest {
         return playerNames;
     }
 
+    public Collection<String> getPlayerIds() {
+        return playerIds;
+    }
+
     public Collection<String> getTeamNames() {
         return teamNames;
     }
@@ -117,6 +123,7 @@ public class MatchRequest {
         private Date createdAfter;
         private Date createdBefore;
 
+        private Collection<String> playerIds;
         private Collection<String> playerNames;
         private Collection<String> teamNames;
 
@@ -167,6 +174,16 @@ public class MatchRequest {
 
         public Builder playerNames(Collection<String> playerNames) {
             this.playerNames = playerNames;
+            return this;
+        }
+
+        public Builder playerId(String playerId) {
+            this.playerIds = Collections.singletonList(playerId);
+            return this;
+        }
+
+        public Builder playerIds(Collection<String> playerIds) {
+            this.playerIds = playerIds;
             return this;
         }
 

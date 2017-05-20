@@ -1,6 +1,5 @@
 package com.vain.flicker.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.vain.flicker.api.client.AbstractWebClient;
 import com.vain.flicker.model.asset.Asset;
@@ -11,7 +10,6 @@ import com.vain.flicker.model.status.Status;
 import com.vain.flicker.utils.Shard;
 import org.asynchttpclient.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -26,7 +24,7 @@ public abstract class AbstractFlickerApi extends AbstractWebClient {
             Sample.class, Asset.class
     );
 
-    private final static String API_VERSION = "v3.7.1";
+    private final static String API_VERSION = "gamelockerd-v6.1.3";
 
     private final static String CONTENT_ENCODING_HEADER = "Content-Encoding";
     private final static String CONTENT_ENCODING_GZIP = "gzip";

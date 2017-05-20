@@ -4,8 +4,22 @@ package com.vain.flicker.utils;
  * @author Dominic Gunn (dominic@vain.gg)
  */
 public enum Shard {
-    NA("North America", "na"), EU("Europe", "eu"), SEA("South East Asia", "sg"),
-    EA("East Asia", "ea"), SA("South America", "sa"), CN("China", "cn");
+    EU("Europe", "eu"),
+    EU_TOURNAMENT("EU Tournament Shard", "tournament-eu"),
+
+    NA("North America", "na"),
+    NA_TOURNAMENT("NA Tournament Shard", "tournament-na"),
+
+    SEA("South East Asia", "sg"),
+    SEA_TOURNAMENT("SEA Tournament Shard", "tournament-sg"),
+
+    EA("East Asia", "ea"),
+    EA_TOURNAMENT("EA Tournament Shard", "tournament-ea"),
+
+    SA("South America", "sa"),
+    SA_TOURNAMENT("SA Tournament Shard", "tournament-sa")
+
+    ;
 
     private String shardRegion;
     private String shortCode;

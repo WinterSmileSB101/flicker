@@ -16,7 +16,7 @@ If you use Maven to manage your dependencies, Flicker is available from Maven Ce
 <dependency>
     <groupId>gg.vain</groupId>
 	<artifactId>flicker</artifactId>
-	<version>3.2.2</version>
+	<version>4.0.0/version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-	compile 'gg.vain:flicker:3.2.2'
+	compile 'gg.vain:flicker:4.0.0'
 }
 ```
 
@@ -90,8 +90,8 @@ public static void main(String[] args) {
 
 Flicker currently depends on the following libraries:
 
-* [Async Http Client](https://github.com/AsyncHttpClient/async-http-client) v2.0.24
-* [JSONAPI Converter](https://github.com/jasminb/jsonapi-converter) v0.6
+* [Async Http Client](https://github.com/AsyncHttpClient/async-http-client) v2.0.32
+* [JSONAPI Converter](https://github.com/jasminb/jsonapi-converter) v0.7
 
 ## Bugs
 

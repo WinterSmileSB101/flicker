@@ -9,7 +9,7 @@
     <groupId>gg.vain</groupId>
     <artifactId>flicker</artifactId>
     <packaging>jar</packaging>
-    <version>3.2.2</version>
+    <version>4.0</version>
 
     <developers>
         <developer>
@@ -43,14 +43,14 @@
         <dependency>
             <groupId>org.asynchttpclient</groupId>
             <artifactId>async-http-client</artifactId>
-            <version>2.0.24</version>
+            <version>2.0.32</version>
         </dependency>
 
         <!-- Json API Modelling -->
         <dependency>
             <groupId>com.github.jasminb</groupId>
             <artifactId>jsonapi-converter</artifactId>
-            <version>0.6</version>
+            <version>0.7</version>
         </dependency>
 
         <!-- Testing -->

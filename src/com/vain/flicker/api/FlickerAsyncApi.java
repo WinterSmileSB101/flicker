@@ -1,7 +1,9 @@
 package com.vain.flicker.api;
 
+import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.vain.flicker.api.requests.MatchRequest;
 import com.vain.flicker.model.ApiResponseHelper;
+import com.vain.flicker.utils.PaginatedList;
 import com.vain.flicker.model.player.Player;
 import com.vain.flicker.model.sample.Sample;
 import com.vain.flicker.utils.Shard;
@@ -71,10 +73,14 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
     }
 
     public CompletableFuture<Player> getPlayerByName(String playerName, Shard shard) {
-        return get(buildShardedUrl(PLAYERS_ENDPOINT + "/", shard), Collections.singletonMap("filter[playerName]", Collections.singletonList(playerName))).thenApply(apiResponse -> {
+        return get(buildShardedUrl(PLAYERS_ENDPOINT, shard), Collections.singletonMap("filter[playerNames]", Collections.singletonList(playerName))).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
-                return resourceConverter.readDocument(apiResponse.getResponseBodyAsStream(), Player.class).get();
+                List<Player> playerList = resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Player.class).get();
+                if (playerList.isEmpty()) {
+                    throw new FlickerException("Something went wrong when pulling player data from the API, no player with name " + playerName + ", in shard " + shard + ", was found.");
+                }
+                return playerList.get(0);
             }
             throw new FlickerException("Something went wrong when pulling player data from the API, response code was :" + apiResponse.getStatusCode());
         });
@@ -95,11 +101,11 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         });
     }
 
-    public CompletableFuture<List<Match>> getMatches() {
+    public CompletableFuture<PaginatedList<Match>> getMatches() {
         return getMatches(new MatchRequest.Builder().build());
     }
 
-    public CompletableFuture<List<Match>> getMatches(MatchRequest matchRequest) {
+    public CompletableFuture<PaginatedList<Match>> getMatches(MatchRequest matchRequest) {
         Shard shard = matchRequest.getShard() == null ? getShard() : matchRequest.getShard();
         Map<String, List<String>> requestParams = new HashMap<>();
 
@@ -127,6 +133,10 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
             requestParams.put("filter[playerNames]", new ArrayList<>(matchRequest.getPlayerNames()));
         }
 
+        if (matchRequest.getPlayerIds() != null) {
+            requestParams.put("filter[playerIds]", new ArrayList<>(matchRequest.getPlayerIds()));
+        }
+
         if (matchRequest.getTeamNames() != null) {
             requestParams.put("filter[teamNames]", new ArrayList<>(matchRequest.getTeamNames()));
         }
@@ -138,7 +148,9 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         return get((buildShardedUrl(MATCHES_ENDPOINT, shard)), requestParams).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
-                return resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Match.class).get();
+                JSONAPIDocument<List<Match>> matchDocument = resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Match.class);
+                return new PaginatedList<>(matchDocument.get(),
+                        matchDocument.getLinks().getNext().getHref(), matchDocument.getLinks().getSelf().getHref());
             }
             throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode() + " seconds");
         });

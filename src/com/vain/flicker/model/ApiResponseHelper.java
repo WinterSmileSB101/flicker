@@ -1,12 +1,6 @@
 package com.vain.flicker.model;
 
-import org.asynchttpclient.HttpResponseBodyPart;
-import org.asynchttpclient.HttpResponseHeaders;
-import org.asynchttpclient.HttpResponseStatus;
 import org.asynchttpclient.Response;
-import org.asynchttpclient.netty.NettyResponse;
-
-import java.util.List;
 
 /**
  * @author Dominic Gunn (dominic@vain.gg)

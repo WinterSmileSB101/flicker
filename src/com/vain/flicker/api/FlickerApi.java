@@ -1,6 +1,7 @@
 package com.vain.flicker.api;
 
 import com.vain.flicker.api.requests.MatchRequest;
+import com.vain.flicker.utils.PaginatedList;
 import com.vain.flicker.model.player.Player;
 import com.vain.flicker.model.sample.Sample;
 import com.vain.flicker.utils.Shard;
@@ -57,11 +58,11 @@ public class FlickerApi {
         return forceGet(flickerAsyncApi.getMatch(matchId, shard));
     }
 
-    public List<Match> getMatches() {
+    public PaginatedList<Match> getMatches() {
         return forceGet(flickerAsyncApi.getMatches());
     }
 
-    public List<Match> getMatches(MatchRequest matchRequest) {
+    public PaginatedList<Match> getMatches(MatchRequest matchRequest) {
         return forceGet(flickerAsyncApi.getMatches(matchRequest));
     }
 
