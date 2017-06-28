@@ -1,6 +1,8 @@
 package com.vain.flicker.api;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
+import com.github.jasminb.jsonapi.Link;
+import com.github.jasminb.jsonapi.Links;
 import com.vain.flicker.api.requests.MatchRequest;
 import com.vain.flicker.model.ApiResponseHelper;
 import com.vain.flicker.utils.PaginatedList;
@@ -148,9 +150,14 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         return get((buildShardedUrl(MATCHES_ENDPOINT, shard)), requestParams).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
-                JSONAPIDocument<List<Match>> matchDocument = resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Match.class);
+                JSONAPIDocument<List<Match>> matchDocument = resourceConverter
+                                .readDocumentCollection(apiResponse.getResponseBodyAsStream(), Match.class);
+                final Links links = matchDocument.getLinks();
+                final Link next = links.getNext();
+                final String nextHref = next == null ? null : next.getHref();
+                final String selfHref = links.getSelf().getHref();
                 return new PaginatedList<>(matchDocument.get(),
-                        matchDocument.getLinks().getNext().getHref(), matchDocument.getLinks().getSelf().getHref());
+                                nextHref, selfHref);
             }
             throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode() + " seconds");
         });
