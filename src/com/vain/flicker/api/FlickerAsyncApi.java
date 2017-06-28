@@ -120,7 +120,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         }
 
         if (matchRequest.getOffset() != null) {
-            requestParams.put("page[offset]", Collections.singletonList(String.valueOf(matchRequest.getLimit())));
+            requestParams.put("page[offset]", Collections.singletonList(String.valueOf(matchRequest.getOffset())));
         }
 
         if (matchRequest.getCreatedAfter() != null) {
