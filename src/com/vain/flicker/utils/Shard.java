@@ -4,6 +4,9 @@ package com.vain.flicker.utils;
  * @author Dominic Gunn (dominic@vain.gg)
  */
 public enum Shard {
+    CN("China", "cn"),
+    CN_TOURNAMENT("China Tournament", "tournament-cn"),
+
     EU("Europe", "eu"),
     EU_TOURNAMENT("EU Tournament Shard", "tournament-eu"),
 
