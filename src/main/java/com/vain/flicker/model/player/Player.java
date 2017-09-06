@@ -2,9 +2,9 @@ package com.vain.flicker.model.player;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.vain.flicker.model.ApiResource;
 import com.vain.flicker.model.asset.Asset;
 
 import java.util.List;
@@ -14,10 +14,7 @@ import java.util.List;
  */
 @Type("player")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Player {
-
-    @Id
-    private String id;
+public class Player extends ApiResource {
 
     private String name;
 
@@ -26,10 +23,6 @@ public class Player {
 
     @Relationship("assets")
     private List<Asset> assets;
-
-    public String getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

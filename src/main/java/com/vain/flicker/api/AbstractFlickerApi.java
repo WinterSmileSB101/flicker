@@ -1,5 +1,6 @@
 package com.vain.flicker.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.vain.flicker.api.client.AbstractWebClient;
 import com.vain.flicker.model.asset.Asset;
@@ -23,6 +24,8 @@ public abstract class AbstractFlickerApi extends AbstractWebClient {
             Match.class, Participant.class, Player.class, Roster.class, Team.class, Status.class,
             Sample.class, Asset.class
     );
+
+    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final static String API_VERSION = "gamelockerd-v6.1.3";
 

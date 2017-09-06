@@ -9,14 +9,29 @@ description = """Flicker API"""
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-
-
 repositories {
-        
      maven { url "http://repo.maven.apache.org/maven2" }
 }
+
 dependencies {
+    // Apache Commons.
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+
+    // Async HTTP Client
     compile group: 'org.asynchttpclient', name: 'async-http-client', version:'2.0.24'
+
+    // JSON Schema and Json API Validators.
     compile group: 'com.github.jasminb', name: 'jsonapi-converter', version:'0.6'
-    testCompile group: 'junit', name: 'junit', version:'3.8.1'
+    compile group: 'com.github.java-json-tools', name: 'json-schema-validator', version:'2.2.8'
+
+    // Mockito
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.9.0'
+
+    // PowerMock
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '1.7.1'
+    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '1.7.1'
+
+    // JUnit 5.0.
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.0.0-RC3'
 }

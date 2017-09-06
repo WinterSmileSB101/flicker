@@ -2,11 +2,11 @@ package com.vain.flicker.model.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import com.vain.flicker.api.FlickerException;
 import com.vain.flicker.api.client.S3WebClient;
+import com.vain.flicker.model.ApiResource;
 import com.vain.flicker.model.asset.Asset;
 import com.vain.flicker.model.telemetry.Telemetry;
 
@@ -18,12 +18,10 @@ import java.util.List;
  */
 @Type("match")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Match {
+public class Match extends ApiResource {
 
     private final static String TELEMETRY_ASSET = "telemetry";
 
-    @Id
-    private String id;
     private String titleId;
 
     @JsonProperty("stats")
@@ -43,10 +41,6 @@ public class Match {
     private List<Asset> assets;
 
     private Telemetry telemetry;
-
-    public String getId() {
-        return id;
-    }
 
     public String getTitleId() {
         return titleId;
