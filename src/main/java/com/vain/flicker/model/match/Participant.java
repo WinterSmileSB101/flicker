@@ -2,6 +2,7 @@ package com.vain.flicker.model.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.annotations.*;
 import com.vain.flicker.model.ApiResource;
 import com.vain.flicker.model.player.Player;
@@ -12,7 +13,7 @@ import com.vain.flicker.utils.ActorHelper;
  */
 @Type("participant")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Participant extends ApiResource {
+public class Participant extends ApiResource<Participant> {
 
     @Relationship("player")
     private Player player;
@@ -23,6 +24,11 @@ public class Participant extends ApiResource {
     private ParticipantStats participantStats;
 
     public Participant() {
+    }
+
+    @Override
+    protected JSONAPIDocument<Participant> getDocument() {
+        return new JSONAPIDocument<>(this);
     }
 
     public String getActor() {

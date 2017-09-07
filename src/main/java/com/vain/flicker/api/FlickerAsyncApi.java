@@ -47,7 +47,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         return get((buildShardedUrl(SAMPLES_ENDPOINT, endShard)), Collections.singletonMap("sort", Collections.singletonList("-createdAt"))).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
-                return readDocumentCollectionAndSetRawResponse(apiResponse.getResponseBodyAsStream(), Sample.class).get();
+                return resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Sample.class).get();
             }
             throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode());
         });
@@ -57,7 +57,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         return get(buildShardedUrl(PLAYERS_ENDPOINT + "/" + playerId, getShard()), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
-                return readDocumentAndSetRawResponse(apiResponse.getResponseBodyAsStream(), Player.class).get();
+                return resourceConverter.readDocument(apiResponse.getResponseBodyAsStream(), Player.class).get();
             }
             throw new FlickerException("Something went wrong when pulling player data from the API, response code was :" + apiResponse.getStatusCode());
         });
@@ -67,7 +67,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         return get(buildShardedUrl(PLAYERS_ENDPOINT + "/" + playerId, shard), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
-                return readDocumentAndSetRawResponse(apiResponse.getResponseBodyAsStream(), Player.class).get();
+                return resourceConverter.readDocument(apiResponse.getResponseBodyAsStream(), Player.class).get();
             }
             throw new FlickerException("Something went wrong when pulling player data from the API, response code was :" + apiResponse.getStatusCode());
         });
@@ -82,7 +82,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         return get(buildShardedUrl(PLAYERS_ENDPOINT, shard), Collections.singletonMap("filter[playerNames]", Collections.singletonList(playerName))).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
-                List<Player> playerList = readDocumentCollectionAndSetRawResponse(apiResponse.getResponseBodyAsStream(), Player.class).get();
+                List<Player> playerList = resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Player.class).get();
                 if (playerList.isEmpty()) {
                     throw new FlickerException("Something went wrong when pulling player data from the API, no player with name " + playerName + ", in shard " + shard + ", was found.");
                 }
@@ -101,7 +101,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         return get((buildShardedUrl(MATCHES_ENDPOINT + "/" + matchId, endShard)), Collections.emptyMap()).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
-                return readDocumentAndSetRawResponse(apiResponse.getResponseBodyAsStream(), Match.class).get();
+                return resourceConverter.readDocument(apiResponse.getResponseBodyAsStream(), Match.class).get();
             }
             throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode());
         });
@@ -154,7 +154,7 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
         return get((buildShardedUrl(MATCHES_ENDPOINT, shard)), requestParams).thenApply(apiResponse -> {
             checkForCommonFailures(apiResponse);
             if (apiResponse.getStatusCode() == HttpResponseStatus.OK.code()) {
-                JSONAPIDocument<List<Match>> matchDocument = readDocumentCollectionAndSetRawResponse(apiResponse.getResponseBodyAsStream(), Match.class);
+                JSONAPIDocument<List<Match>> matchDocument = resourceConverter.readDocumentCollection(apiResponse.getResponseBodyAsStream(), Match.class);
                 final Links links = matchDocument.getLinks();
                 final Link next = links.getNext();
                 final String nextHref = next == null ? null : next.getHref();
@@ -164,31 +164,6 @@ public class FlickerAsyncApi extends AbstractFlickerApi {
             }
             throw new FlickerException("Something went wrong when pulling match data from the API, response code was :" + apiResponse.getStatusCode() + " seconds");
         });
-    }
-
-    private <T extends ApiResource> JSONAPIDocument<List<T>> readDocumentCollectionAndSetRawResponse(InputStream dataStream, Class<T> clazz) {
-        try {
-            final byte[] rawResponse = IOUtils.toByteArray(dataStream);
-            final JSONAPIDocument<List<T>> responseCollection = resourceConverter.readDocumentCollection(rawResponse, clazz);
-            for (T entity : responseCollection.get()) {
-                entity.setRawApiResponse(new String(rawResponse));
-            }
-            return responseCollection;
-        } catch (IOException ex) {
-            throw new FlickerException("Unable to serialize document");
-        }
-    }
-
-    private <T extends ApiResource> JSONAPIDocument<T> readDocumentAndSetRawResponse(InputStream dataStream, Class<T> clazz) {
-        try {
-            final byte[] rawResponse = IOUtils.toByteArray(dataStream);
-            final JSONAPIDocument<T> responseDocument = resourceConverter.readDocument(rawResponse, clazz);
-
-            responseDocument.get().setRawApiResponse(new String(rawResponse));
-            return responseDocument;
-        } catch (IOException ex) {
-            throw new FlickerException("Unable to serialize document");
-        }
     }
 
     protected boolean hasReachedLimit() {

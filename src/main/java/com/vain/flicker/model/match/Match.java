@@ -2,6 +2,7 @@ package com.vain.flicker.model.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import com.vain.flicker.api.FlickerException;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 @Type("match")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Match extends ApiResource {
+public class Match extends ApiResource<Match> {
 
     private final static String TELEMETRY_ASSET = "telemetry";
 
@@ -40,7 +41,12 @@ public class Match extends ApiResource {
     @Relationship("assets")
     private List<Asset> assets;
 
-    private Telemetry telemetry;
+    private transient Telemetry telemetry;
+
+    @Override
+    protected JSONAPIDocument<Match> getDocument() {
+        return new JSONAPIDocument<>(this);
+    }
 
     public String getTitleId() {
         return titleId;

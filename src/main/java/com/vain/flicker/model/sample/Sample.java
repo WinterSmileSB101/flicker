@@ -2,8 +2,10 @@ package com.vain.flicker.model.sample;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.annotations.Type;
 import com.vain.flicker.model.ApiResource;
+import com.vain.flicker.model.match.Participant;
 
 import java.util.Date;
 
@@ -12,7 +14,7 @@ import java.util.Date;
  */
 @Type("sample")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Sample extends ApiResource {
+public class Sample extends ApiResource<Sample> {
 
     @JsonProperty("URL")
     private String url;
@@ -23,6 +25,11 @@ public class Sample extends ApiResource {
     private Date createdAt;
     private Date t0;
     private Date t1;
+
+    @Override
+    protected JSONAPIDocument<Sample> getDocument() {
+        return new JSONAPIDocument<>(this);
+    }
 
     public String getUrl() {
         return url;
