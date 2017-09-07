@@ -25,8 +25,6 @@ public abstract class AbstractFlickerApi extends AbstractWebClient {
             Sample.class, Asset.class
     );
 
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     private final static String API_VERSION = "gamelockerd-v6.1.3";
 
     private final static String CONTENT_ENCODING_HEADER = "Content-Encoding";
